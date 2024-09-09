@@ -18,7 +18,7 @@ func TestPricing(t *testing.T) {
 	t.Run("returns expected pricing rules", func(t *testing.T) {
 		pr := pricing.NewPricingRules()
 
-		expectedRules := PricingRules{
+		expectedRules := pricing.PricingRules{
 			"A": {UnitPrice: 50, SpecialPriceQuantity: 3, SpecialPriceAmount: 130},
 			"B": {UnitPrice: 30, SpecialPriceQuantity: 2, SpecialPriceAmount: 45},
 			"C": {UnitPrice: 20},
