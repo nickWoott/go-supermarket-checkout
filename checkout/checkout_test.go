@@ -7,14 +7,14 @@ import (
 	"github.com/nickWoott/go-supermarket-checkout-kata/pricing"
 )
 
-func TestCheckout(t *testing.T) {
+func TestCheckout_NewCheckout(t *testing.T) {
+	expectedRules := pricing.PricingRules{
+		"A": {UnitPrice: 50, SpecialPriceQuantity: 3, SpecialPriceAmount: 130},
+		"B": {UnitPrice: 30, SpecialPriceQuantity: 2, SpecialPriceAmount: 45},
+		"C": {UnitPrice: 20},
+		"D": {UnitPrice: 15},
+	}
 	t.Run("instantiates Checkout struct", func(t *testing.T) {
-		expectedRules := pricing.PricingRules{
-			"A": {UnitPrice: 50, SpecialPriceQuantity: 3, SpecialPriceAmount: 130},
-			"B": {UnitPrice: 30, SpecialPriceQuantity: 2, SpecialPriceAmount: 45},
-			"C": {UnitPrice: 20},
-			"D": {UnitPrice: 15},
-		}
 		co := checkout.NewCheckout(expectedRules)
 
 		if co == nil {
@@ -22,12 +22,6 @@ func TestCheckout(t *testing.T) {
 		}
 
 		t.Run("Checkout contains correct fields", func(t *testing.T) {
-			expectedRules := pricing.PricingRules{
-				"A": {UnitPrice: 50, SpecialPriceQuantity: 3, SpecialPriceAmount: 130},
-				"B": {UnitPrice: 30, SpecialPriceQuantity: 2, SpecialPriceAmount: 45},
-				"C": {UnitPrice: 20},
-				"D": {UnitPrice: 15},
-			}
 
 			co := checkout.NewCheckout(expectedRules)
 
