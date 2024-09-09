@@ -43,3 +43,31 @@ func TestCheckout_NewCheckout(t *testing.T) {
 		})
 	})
 }
+
+func TestCheckout_Scan(t *testing.T) {
+	expectedRules := pricing.NewPricingRules()
+	co := checkout.NewCheckout(expectedRules)
+
+	tests := []struct {
+		sku         string
+		expectedQty int
+	}{
+		{"A", 1},
+		{"B", 1},
+		{"C", 1},
+	}
+
+	for _, test := range tests {
+		t.Run("Scan appends string to items field", func(t *testing.T) {
+			err := co.Scan(test.sku)
+
+			if err != nil {
+				t.Errorf("Scan(%q) returned error %v, expected no error", test.sku, err)
+			}
+
+			if qty := co.Items[test.sku]; qty != test.expectedQty {
+				t.Errorf("Scan(%q) resulted in quantity %d, expected %d", test.sku, qty, test.expectedQty)
+			}
+		})
+	}
+}
