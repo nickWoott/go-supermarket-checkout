@@ -13,3 +13,8 @@ func NewCheckout(pricingRules pricing.PricingRules) *Checkout {
 		PricingRules: pricingRules,
 	}
 }
+
+func (c *Checkout) Scan(SKU string) error {
+	c.Items[SKU]++
+	return nil
+}
