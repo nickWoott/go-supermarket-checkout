@@ -1,6 +1,10 @@
 package checkout
 
-import "github.com/nickWoott/go-supermarket-checkout-kata/pricing"
+import (
+	"errors"
+
+	"github.com/nickWoott/go-supermarket-checkout-kata/pricing"
+)
 
 type Checkout struct {
 	Items        map[string]int
@@ -15,6 +19,9 @@ func NewCheckout(pricingRules pricing.PricingRules) *Checkout {
 }
 
 func (c *Checkout) Scan(SKU string) error {
+	if _, exists := c.PricingRules[SKU]; !exists {
+		return errors.New("invalid item ")
+	}
 	c.Items[SKU]++
 	return nil
 }
