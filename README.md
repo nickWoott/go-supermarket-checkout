@@ -20,6 +20,8 @@ To run the CLI implementation, from the root of the project run:
 
 The program will allow entry of any SKU found in the current pricing rules. Upon typing 'done', the GetTotalPrice method will be called. 
 
+Note that SKU's are case sensitive. 
+
 ## Tests
 
 Tests can be found for both the pricing and checkout packages.
