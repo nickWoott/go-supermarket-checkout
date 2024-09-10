@@ -87,6 +87,26 @@ func TestCheckout_GetTotalPrice(t *testing.T) {
 			scans:         []string{"A"},
 			expectedTotal: 50,
 		},
+		{
+			scans:         []string{"A", "B"},
+			expectedTotal: 80,
+		},
+		{
+			scans:         []string{"A", "A", "A"},
+			expectedTotal: 130,
+		},
+		{
+			scans:         []string{"B", "B"},
+			expectedTotal: 45,
+		},
+		{
+			scans:         []string{"A", "B", "C"},
+			expectedTotal: 50 + 30 + 20,
+		},
+		{
+			scans:         []string{"A", "A", "B", "C"},
+			expectedTotal: 130 + 30 + 20,
+		},
 	}
 
 	for _, test := range tests {
