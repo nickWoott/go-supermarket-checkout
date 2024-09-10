@@ -1,7 +1,6 @@
 package checkout_test
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/nickWoott/go-supermarket-checkout-kata/checkout"

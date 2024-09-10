@@ -26,7 +26,14 @@ func (c *Checkout) Scan(SKU string) error {
 	return nil
 }
 
-func (c *Checkout) GetTotalPrice() int {
+func (c *Checkout) GetTotalPrice() (int, error) {
+
+	if len(c.Items) <= 0 {
+
+		return 0, errors.New("no items scanned")
+
+	}
+
 	totalPrice := 0
 
 	for SKU, count := range c.Items {
@@ -42,5 +49,5 @@ func (c *Checkout) GetTotalPrice() int {
 		}
 	}
 
-	return totalPrice
+	return totalPrice, nil
 }
