@@ -1,6 +1,7 @@
 package checkout_test
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/nickWoott/go-supermarket-checkout-kata/checkout"
@@ -69,6 +70,35 @@ func TestCheckout_Scan(t *testing.T) {
 
 			if !test.expectError && co.Items[test.sku] != test.expectedQty {
 				t.Errorf("Scan(%q) resulted in quantity %d, expected %d", test.sku, co.Items[test.sku], test.expectedQty)
+			}
+		})
+	}
+}
+
+func TestCheckout_GetTotalPrice(t *testing.T) {
+	expectedRules := pricing.NewPricingRules()
+	co := checkout.NewCheckout(expectedRules)
+
+	tests := []struct {
+		scans         []string
+		expectedTotal int
+	}{
+		{
+			scans:         []string{"A"},
+			expectedTotal: 50,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(fmt.Sprintf("TotalPrice with %v", test.scans), func(t *testing.T) {
+			for _, sku := range test.scans {
+				co.Scan(sku)
+			}
+
+			total := co.GetTotalPrice()
+
+			if total != test.expectedTotal {
+				t.Errorf("result = %d, expected %d", total, test.expectedTotal)
 			}
 		})
 	}
