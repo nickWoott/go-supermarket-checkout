@@ -25,3 +25,14 @@ func (c *Checkout) Scan(SKU string) error {
 	c.Items[SKU]++
 	return nil
 }
+
+func (c *Checkout) GetTotalPrice() int {
+	totalPrice := 0
+
+	for SKU, count := range c.Items {
+
+		totalPrice += count * c.PricingRules[SKU].UnitPrice
+	}
+
+	return totalPrice
+}
