@@ -76,8 +76,6 @@ func TestCheckout_Scan(t *testing.T) {
 }
 
 func TestCheckout_GetTotalPrice(t *testing.T) {
-	expectedRules := pricing.NewPricingRules()
-	co := checkout.NewCheckout(expectedRules)
 
 	tests := []struct {
 		scans         []string
@@ -105,12 +103,14 @@ func TestCheckout_GetTotalPrice(t *testing.T) {
 		},
 		{
 			scans:         []string{"A", "A", "B", "C"},
-			expectedTotal: 130 + 30 + 20,
+			expectedTotal: 50 + 50 + 30 + 20,
 		},
 	}
 
 	for _, test := range tests {
 		t.Run(fmt.Sprintf("TotalPrice with %v", test.scans), func(t *testing.T) {
+			expectedRules := pricing.NewPricingRules()
+			co := checkout.NewCheckout(expectedRules)
 			for _, sku := range test.scans {
 				co.Scan(sku)
 			}

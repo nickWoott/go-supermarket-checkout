@@ -30,8 +30,16 @@ func (c *Checkout) GetTotalPrice() int {
 	totalPrice := 0
 
 	for SKU, count := range c.Items {
+		rule := c.PricingRules[SKU]
 
-		totalPrice += count * c.PricingRules[SKU].UnitPrice
+		if rule.SpecialPriceQuantity > 0 {
+			specialPrice := (count / rule.SpecialPriceQuantity) * rule.SpecialPriceAmount
+			standardPrice := (count % rule.SpecialPriceQuantity) * rule.UnitPrice
+
+			totalPrice += specialPrice + standardPrice
+		} else {
+			totalPrice += count * rule.UnitPrice
+		}
 	}
 
 	return totalPrice
