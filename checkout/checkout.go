@@ -6,6 +6,11 @@ import (
 	"github.com/nickWoott/go-supermarket-checkout-kata/pricing"
 )
 
+type ICheckout interface {
+	Scan(SKU string) error
+	GetTotalPrice() (totalPrice int, err error)
+}
+
 type Checkout struct {
 	Items        map[string]int
 	PricingRules pricing.PricingRules
