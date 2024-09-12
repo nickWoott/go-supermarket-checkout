@@ -9,8 +9,16 @@ import (
 )
 
 func main() {
-	pricingRules := pricing.NewPricingRules()
-	co := checkout.NewCheckout(pricingRules)
+
+	type ICheckout interface {
+		Scan(SKU string) error
+		GetTotalPrice() (totalPrice int, err error)
+	}
+
+	// need to check that this is actually typed with the interface
+	// hmm this is actually a bloody good thing that i think i can do which is nice.
+	ps := pricing.NewPricingService()
+	var co ICheckout = checkout.NewCheckout(ps)
 
 	fmt.Println("Enter items to scan. Type 'done' to finish:")
 

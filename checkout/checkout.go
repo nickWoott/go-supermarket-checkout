@@ -2,56 +2,51 @@ package checkout
 
 import (
 	"errors"
-
-	"github.com/nickWoott/go-supermarket-checkout-kata/pricing"
 )
 
-type ICheckout interface {
-	Scan(SKU string) error
-	GetTotalPrice() (totalPrice int, err error)
+type PricingService interface {
+	ApplyPricingRule(sku string, quantity int) (int, error)
+	IsValidSKU(sku string) bool
 }
 
 type Checkout struct {
-	Items        map[string]int
-	PricingRules pricing.PricingRules
+	items          map[string]int
+	pricingService PricingService
 }
 
-func NewCheckout(pricingRules pricing.PricingRules) *Checkout {
+func NewCheckout(pricingService PricingService) *Checkout {
 	return &Checkout{
-		Items:        make(map[string]int),
-		PricingRules: pricingRules,
+		items:          make(map[string]int),
+		pricingService: pricingService,
 	}
 }
 
 func (c *Checkout) Scan(SKU string) error {
-	if _, exists := c.PricingRules[SKU]; !exists {
-		return errors.New("invalid item ")
+	isValid := c.pricingService.IsValidSKU(SKU)
+
+	if !isValid {
+		return errors.New("invalid sku")
 	}
-	c.Items[SKU]++
+	c.items[SKU]++
 	return nil
 }
 
 func (c *Checkout) GetTotalPrice() (int, error) {
 
-	if len(c.Items) <= 0 {
-
+	if len(c.items) <= 0 {
 		return 0, errors.New("no items scanned")
-
 	}
 
 	totalPrice := 0
 
-	for SKU, count := range c.Items {
-		rule := c.PricingRules[SKU]
+	for SKU, quantity := range c.items {
+		finalItemPrice, err := c.pricingService.ApplyPricingRule(SKU, quantity)
 
-		if rule.SpecialPriceQuantity > 0 {
-			specialPrice := (count / rule.SpecialPriceQuantity) * rule.SpecialPriceAmount
-			standardPrice := (count % rule.SpecialPriceQuantity) * rule.UnitPrice
-
-			totalPrice += specialPrice + standardPrice
-		} else {
-			totalPrice += count * rule.UnitPrice
+		if err != nil {
+			return 0, err
 		}
+
+		totalPrice += finalItemPrice
 	}
 
 	return totalPrice, nil
