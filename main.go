@@ -9,8 +9,14 @@ import (
 )
 
 func main() {
-	pricingRules := pricing.NewPricingRules()
-	co := checkout.NewCheckout(pricingRules)
+
+	type ICheckout interface {
+		Scan(SKU string) error
+		GetTotalPrice() (totalPrice int, err error)
+	}
+
+	ps := pricing.NewPricingService()
+	var co ICheckout = checkout.NewCheckout(ps)
 
 	fmt.Println("Enter items to scan. Type 'done' to finish:")
 

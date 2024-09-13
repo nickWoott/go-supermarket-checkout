@@ -29,8 +29,6 @@ Tests can be found for both the pricing and checkout packages.
 `go test ./checkout/checkout_test.go`
 `go test ./pricing/pricing_test.go`
 
-## Future Improvements
 
-This kata was completed using TDD with functionality in mind. These tests rely on concrete implementation of the Checkout and PricingRules structs. To make this a more extensible and flexible program, the next step would be to add interface implementation for the Checkout and PricingRules, then amending the testing suite to only test method implementation. 
 
 
