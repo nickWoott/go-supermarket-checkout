@@ -39,11 +39,18 @@ func (p *PricingService) ApplyPricingRule(sku string, quantity int) (int, error)
 		return 0, fmt.Errorf("pricing rule not found for SKU: %s", sku)
 	}
 
-	specialPrice := (quantity / pricingRule.specialPriceQuantity) * pricingRule.specialPriceAmount
+	if pricingRule.specialPriceQuantity > 0 {
 
-	standardPrice := (quantity % pricingRule.specialPriceQuantity) * pricingRule.unitPrice
+		specialPrice := (quantity / pricingRule.specialPriceQuantity) * pricingRule.specialPriceAmount
 
-	return specialPrice + standardPrice, nil
+		standardPrice := (quantity % pricingRule.specialPriceQuantity) * pricingRule.unitPrice
+		return specialPrice + standardPrice, nil
+
+	} else {
+
+		return (quantity * pricingRule.unitPrice), nil
+	}
+
 }
 
 func (p *PricingService) IsValidSKU(sku string) bool {

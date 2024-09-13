@@ -15,8 +15,6 @@ func main() {
 		GetTotalPrice() (totalPrice int, err error)
 	}
 
-	// need to check that this is actually typed with the interface
-	// hmm this is actually a bloody good thing that i think i can do which is nice.
 	ps := pricing.NewPricingService()
 	var co ICheckout = checkout.NewCheckout(ps)
 
